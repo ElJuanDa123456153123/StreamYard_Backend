@@ -28,7 +28,6 @@ export class SessionRepository {
 
   async findAll(): Promise<Session[]> {
     return await this.repository.find({
-      relations: ['user', 'stream'],
       order: { createdAt: 'DESC' },
     });
   }
@@ -36,14 +35,12 @@ export class SessionRepository {
   async findById(id: string): Promise<Session> {
     return await this.repository.findOne({
       where: { id },
-      relations: ['user', 'stream'],
     });
   }
 
   async findByStream(streamId: string): Promise<Session[]> {
     return await this.repository.find({
       where: { streamId },
-      relations: ['user'],
       order: { joinedAt: 'ASC' },
     });
   }
@@ -51,7 +48,6 @@ export class SessionRepository {
   async findByUser(userId: string): Promise<Session[]> {
     return await this.repository.find({
       where: { userId },
-      relations: ['stream'],
       order: { createdAt: 'DESC' },
     });
   }
@@ -62,14 +58,12 @@ export class SessionRepository {
         streamId,
         status: SessionStatus.ACTIVE,
       },
-      relations: ['user'],
     });
   }
 
   async findByUserAndStream(userId: string, streamId: string): Promise<Session> {
     return await this.repository.findOne({
       where: { userId, streamId },
-      relations: ['user', 'stream'],
     });
   }
 

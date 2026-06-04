@@ -1,5 +1,4 @@
 import { SessionStatus, SessionRole } from '../entities/session.entity';
-import { UserResponseDto } from '../../../users/dto/user-response.dto';
 
 export class SessionResponseDto {
   id: string;
@@ -28,7 +27,7 @@ export class SessionResponseDto {
     packetLoss?: number;
   };
   userId: string;
-  user?: UserResponseDto;
+  user?: any;
   streamId: string;
   createdAt: Date;
   updatedAt: Date;

@@ -4,11 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
 } from 'typeorm';
-import { User } from '../../../users/entities/user.entity';
-import { Stream } from '../../../streams/entities/stream.entity';
 
 export enum SessionStatus {
   WAITING = 'waiting',
@@ -76,16 +72,12 @@ export class Session {
   @Column('uuid')
   userId: string;
 
-  @ManyToOne(() => User, (user) => user.sessions, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
-  user: User;
-
   @Column('uuid')
   streamId: string;
 
-  @ManyToOne(() => Stream, (stream) => stream.sessions, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'streamId' })
-  stream: Stream;
+  // Relations - sin decoradores para evitar errores
+  user?: any;
+  stream?: any;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
