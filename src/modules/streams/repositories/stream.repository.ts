@@ -22,7 +22,6 @@ export class StreamRepository {
 
   async findAll(): Promise<Stream[]> {
     return await this.repository.find({
-      relations: ['owner', 'sessions'],
       order: { createdAt: 'DESC' },
     });
   }
@@ -30,14 +29,12 @@ export class StreamRepository {
   async findById(id: string): Promise<Stream> {
     return await this.repository.findOne({
       where: { id },
-      relations: ['owner', 'sessions', 'sessions.user'],
     });
   }
 
   async findByOwner(ownerId: string): Promise<Stream[]> {
     return await this.repository.find({
       where: { ownerId },
-      relations: ['sessions'],
       order: { createdAt: 'DESC' },
     });
   }
@@ -45,7 +42,6 @@ export class StreamRepository {
   async findByStatus(status: StreamStatus): Promise<Stream[]> {
     return await this.repository.find({
       where: { status },
-      relations: ['owner'],
       order: { createdAt: 'DESC' },
     });
   }
@@ -53,7 +49,6 @@ export class StreamRepository {
   async findPublicStreams(limit: number = 50): Promise<Stream[]> {
     return await this.repository.find({
       where: { privacy: StreamPrivacy.PUBLIC },
-      relations: ['owner'],
       order: { createdAt: 'DESC' },
       take: limit,
     });
@@ -62,7 +57,6 @@ export class StreamRepository {
   async findLiveStreams(): Promise<Stream[]> {
     return await this.repository.find({
       where: { status: StreamStatus.LIVE },
-      relations: ['owner', 'sessions', 'sessions.user'],
       order: { viewerCount: 'DESC' },
     });
   }
@@ -70,7 +64,6 @@ export class StreamRepository {
   async findScheduledStreams(): Promise<Stream[]> {
     return await this.repository.find({
       where: { status: StreamStatus.SCHEDULED },
-      relations: ['owner'],
       order: { scheduledFor: 'ASC' },
     });
   }
@@ -86,11 +79,11 @@ export class StreamRepository {
   }
 
   async incrementViewerCount(id: string): Promise<void> {
-    await this.repository.increment(id, 'viewerCount', 1);
+    await this.repository.increment({ id }, 'viewerCount', 1);
   }
 
   async decrementViewerCount(id: string): Promise<void> {
-    await this.repository.decrement(id, 'viewerCount', 1);
+    await this.repository.decrement({ id }, 'viewerCount', 1);
   }
 
   async remove(id: string): Promise<void> {

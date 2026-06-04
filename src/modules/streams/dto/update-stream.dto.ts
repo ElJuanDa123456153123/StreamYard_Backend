@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsBoolean, IsArray, IsInt, Min, Max, IsDateString, ValidateNested } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsBoolean, IsArray, IsInt, Min, Max, MinLength, MaxLength, IsDateString, ValidateNested } from 'class-validator';
 import { StreamPrivacy, StreamPlatform, StreamStatus } from '../entities/stream.entity';
 import { Type } from 'class-transformer';
 import { StreamSettingsDto } from './create-stream.dto';
@@ -46,4 +46,12 @@ export class UpdateStreamDto {
   @IsOptional()
   @IsDateString()
   scheduledFor?: string;
+
+  @IsOptional()
+  @IsDateString()
+  startedAt?: string;
+
+  @IsOptional()
+  @IsDateString()
+  endedAt?: string;
 }

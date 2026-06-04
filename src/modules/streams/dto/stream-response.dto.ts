@@ -1,5 +1,4 @@
 import { StreamPrivacy, StreamStatus, StreamPlatform } from '../entities/stream.entity';
-import { UserResponseDto } from '../../../users/dto/user-response.dto';
 
 export class StreamSettingsDto {
   enableChat: boolean;
@@ -26,7 +25,7 @@ export class StreamResponseDto {
   isRecorded: boolean;
   recordingUrl?: string;
   ownerId: string;
-  owner?: UserResponseDto;
+  owner?: any;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -40,11 +39,7 @@ export class StreamListDto {
   thumbnailUrl?: string;
   scheduledFor?: Date;
   viewerCount: number;
-  owner: {
-    id: string;
-    name: string;
-    avatar?: string;
-  };
+  ownerId: string;
   createdAt: Date;
 }
 

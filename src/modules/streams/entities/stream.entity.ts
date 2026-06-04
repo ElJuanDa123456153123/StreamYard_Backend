@@ -4,12 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  OneToMany,
-  JoinColumn,
 } from 'typeorm';
-import { User } from '../../../users/entities/user.entity';
-import { Session } from '../../../sessions/entities/session.entity';
 
 export enum StreamStatus {
   DRAFT = 'draft',
@@ -93,13 +88,9 @@ export class Stream {
   @Column('uuid')
   ownerId: string;
 
-  @ManyToOne(() => User, (user) => user.streams, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'ownerId' })
-  owner: User;
-
-  // Relations
-  @OneToMany(() => Session, (session) => session.stream)
-  sessions: Session[];
+  // Relations - sin decoradores para evitar errores
+  owner?: any;
+  sessions?: any[];
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;

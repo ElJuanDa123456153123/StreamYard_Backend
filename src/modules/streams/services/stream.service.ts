@@ -121,7 +121,7 @@ export class StreamService {
       // Update timestamps for starting a stream
       const updateDto: UpdateStreamDto = {
         status: StreamStatus.LIVE,
-        startedAt: new Date().toISOString() as any,
+        startedAt: new Date().toISOString(),
       };
       const updatedStream = await this.streamRepository.update(id, updateDto);
       return this.toResponseDto(updatedStream);
@@ -131,7 +131,7 @@ export class StreamService {
       // Update timestamps for ending a stream
       const updateDto: UpdateStreamDto = {
         status: StreamStatus.ENDED,
-        endedAt: new Date().toISOString() as any,
+        endedAt: new Date().toISOString(),
       };
       const updatedStream = await this.streamRepository.update(id, updateDto);
       return this.toResponseDto(updatedStream);
@@ -213,11 +213,7 @@ export class StreamService {
       thumbnailUrl: stream.thumbnailUrl,
       scheduledFor: stream.scheduledFor,
       viewerCount: stream.viewerCount,
-      owner: {
-        id: stream.owner.id,
-        name: stream.owner.name,
-        avatar: stream.owner.avatar,
-      },
+      ownerId: stream.ownerId,
       createdAt: stream.createdAt,
     };
   }
