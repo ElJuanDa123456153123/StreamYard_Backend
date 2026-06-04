@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../users/services/user.service';
+import { UserRepository } from '../../users/repositories/user.repository';
 import { User } from '../../users/entities/user.entity';
 import { LoginDto, RegisterDto } from '../dto/login.dto';
 import { AuthResponseDto } from '../dto/auth-response.dto';
@@ -11,11 +12,12 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<User> {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user || !user.password) {
       throw new UnauthorizedException('Invalid credentials');
@@ -61,7 +63,7 @@ export class AuthService {
     try {
       await this.userService.findByEmail(registerDto.email);
       throw new BadRequestException('User with this email already exists');
-    } catch (error) {
+    } catch (error: any) {
       if (error.status !== 404) {
         throw error;
       }
@@ -71,11 +73,10 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     // Create user
-    const user = await this.userService.create({
+    const user = await this.userRepository.create({
       ...registerDto,
       password: hashedPassword,
-      isEmailVerified: false,
-    });
+    } as any);
 
     const tokens = await this.generateTokens(user);
 
@@ -129,7 +130,7 @@ export class AuthService {
     try {
       const payload = this.jwtService.verify(refreshToken);
 
-      const user = await this.userService.findById(payload.sub);
+      const user = await this.userRepository.findById(payload.sub);
       if (!user) {
         throw new UnauthorizedException('User not found');
       }
