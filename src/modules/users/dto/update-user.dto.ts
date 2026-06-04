@@ -31,4 +31,8 @@ export class UpdateUserDto {
   @IsOptional()
   @IsBoolean()
   isEmailVerified?: boolean;
+
+  @IsOptional()
+  @IsString()
+  googleId?: string;
 }
